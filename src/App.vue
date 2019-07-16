@@ -1,15 +1,18 @@
 <template>
   <div id="app" class='flex flex-column'>
-    <header id="nav" class='flex justify-between items-center'>
+    <header id="nav" class='flex justify-between items-center pa2 purple'>
       <!-- <router-link to="/">Home</router-link> | -->
       <!-- <router-link to="/search">search</router-link> -->
       <div>
-        
+        <img width='75' src='./assets/picture.svg' />
       </div>
-      <div></div>
+      <div class='flex items-center items-stretch b fw5'>
+        <span class='pa1'>Surresh</span>
+        <span class='pa1'><i class="fa fa-bell" aria-hidden="true"></i></span>
+      </div>
     </header>
     <section id='action-area' class='flex flex-auto justify-center'>
-      <div class="w-60 h-100 bg-gray">
+      <div class="w-60 h-100 bl br b--light-silver">
         <router-view/>
       </div>
     </section>
