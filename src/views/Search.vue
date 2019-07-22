@@ -15,7 +15,7 @@
       </ul>
     </div>
     <!-- info area -->
-    <div class='pt1 pb1 mb2' v-if='false'>
+    <div class='pt1 pb1 mb2' v-if='true'>
       something need to be here
     </div>
     <!-- search meta data -->
@@ -215,8 +215,8 @@
       </div>
     </div>
     <!-- action area -->
-    <div class='mb2' v-if='false'>
-      <input type="text" v-if='false' placeholder="Type where to go...?" class="form-control form-control-xl bn f3">
+    <div class='mb2' v-if='true'>
+      <input type="text" v-if='true' placeholder="Type where to go...?" class="form-control form-control-xl bn f3">
       <div class='flex items-center f3 w-40'>
         <div><i class="fa fa-minus-circle" aria-hidden="true"></i></div>
         <div class='flex-auto tc'>
@@ -243,7 +243,7 @@
 
     </div>
     <!-- city listing area -->
-    <div class='flex flex-column' v-if='false'>
+    <div class='flex flex-column' v-if='true'>
       <div class='pt2 pb2'>often Destination</div>
       <ul class='flex flex-column pa0 h-100 overflow-y'>
         <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'>
@@ -278,7 +278,7 @@
       </ul>
     </div>
     <!-- employee listing area -->
-    <div v-if='false'>
+    <div v-if='true'>
       <div class='pt2 pb2 b fw5'>Guest with you</div>
       <div class='flex items-stretch '>
         <div class='flex flex-column w-25 bg-light-gray'>
