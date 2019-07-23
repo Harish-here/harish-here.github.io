@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-column">
-    <div class='b purple mb2'>
+    <div class='b purple mb2' v-if='false'>
       New Booking
     </div>
     <!--Tab - sub route -->
-    <div class='nav-folder pa0 mb2'>
+    <div class='nav-folder pa0 mb2' v-if='false'>
       <ul class="nav nav-pills">
           <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#menu1">Room</a>
@@ -15,11 +15,11 @@
       </ul>
     </div>
     <!-- info area -->
-    <div class='pt1 pb1 mb2' v-if='true'>
+    <div class='pt1 pb1 mb2' v-if='false'>
       something need to be here
     </div>
     <!-- search meta data -->
-    <div class='pt1 pb1 mb2 flex flex-column'>
+    <div class='pt1 pb1 mb2 flex flex-column' v-if='false'>
         <div class='mb2'>Hotel List result of</div>
         <div class='flex w-75 items-center  mb2'>
           <ul class='flex items-center w-80'>
@@ -46,7 +46,7 @@
         </div>
     </div>
     <!-- hotel listing area -->
-    <div class='bg-light-gray pt2 pb2 flex items-stretch'>
+    <div class='bg-light-gray pt2 pb2 flex items-stretch' v-if='false'>
       <div class='flex w-100'>
         <!-- filter potion -->
         <div class='w-20 bg-white ml2 pa3'>
@@ -215,7 +215,7 @@
       </div>
     </div>
     <!-- action area -->
-    <div class='mb2' v-if='true'>
+    <div class='mb2' v-if='false'>
       <input type="text" v-if='true' placeholder="Type where to go...?" class="form-control form-control-xl bn f3">
       <div class='flex items-center f3 w-40'>
         <div><i class="fa fa-minus-circle" aria-hidden="true"></i></div>
@@ -243,7 +243,7 @@
 
     </div>
     <!-- city listing area -->
-    <div class='flex flex-column' v-if='true'>
+    <div class='flex flex-column' v-if='false'>
       <div class='pt2 pb2'>often Destination</div>
       <ul class='flex flex-column pa0 h-100 overflow-y'>
         <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'>
@@ -278,7 +278,7 @@
       </ul>
     </div>
     <!-- employee listing area -->
-    <div v-if='true'>
+    <div v-if='false'>
       <div class='pt2 pb2 b fw5'>Guest with you</div>
       <div class='flex items-stretch '>
         <div class='flex flex-column w-25 bg-light-gray'>
@@ -327,23 +327,177 @@
         </div>
       </div>
     </div>
+    <!-- hotel profile page -->
+    <div class='flex bg-light-gray h-400 align-stretch' v-if='false'>
+      <div class=' w-5 flex justify-center items-center'>
+        <div class='purple'> Pre</div>
+      </div>
+      <!-- hotel card section -->
+      <div class='w-45 pa2 flex align-stretch'>
+        <div class='bg-white flex flex-column align-stretch w-100 pa3'>
+          <div class='flex flex-column h-half'>
+            <div class='b'>Hotel Details</div>
+            <div>
+              <ul class='flex flex-column items-center'>
+                <li>
+                  <div class='gray'>Hotel Name</div>
+                  <div class='f5 b'>Hilton Hotel</div>
+                </li>
+                <li>
+                  <div class='gray '>Price</div>
+                  <div class='f5 b'>2500</div>                  
+                </li>
+              </ul>
+              <ul class='flex items-center'>
+                <li class='flex-auto'>
+                  <div class='gray'>Hotel Range</div>
+                  <div>3 Star Hotel</div>
+                </li>
+                <li class='flex-auto'>
+                  <div class='gray '>Review</div>
+                  <div>3 Star Hotel</div>
+                </li>
+                <li class='flex-auto'>
+                  <div class='gray '>Location</div>
+                  <div>3 Star Hotel</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- service -->
+          <div class='flex flex-column h-half'>
+            <div class="b">Service</div>
+            <div class='flex align-stretch'>
+              <ul class='flex flex-wrap w-100'>
+               <li class='flex pa1 gray flex-column w-20' >
+                  <div class='f5 tc'>
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                  </div>
+                  <div class='f7 tc'>
+                    pick-up 
+                  </div>
+               </li>
+               <li class='flex pa1 gray flex-column w-20' >
+                  <div class='f5 tc'>
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                  </div>
+                  <div class='f7 tc'>
+                    pick-up 
+                  </div>
+               </li>
+               <li class='flex pa1 gray flex-column w-20' >
+                  <div class='f5 tc'>
+                    <i class="fa fa-car" aria-hidden="true"></i>
+                  </div>
+                  <div class='f7 tc'>
+                    pick-up 
+                  </div>
+               </li> 
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- location amenities section -->
+      <div class='w-45 pa2 flex align-stretch'>
+        <div class='flex flex-column align-stretch'>
+          <div class='h-half flex align-stretch pa2 bg-white'>
+            <!-- photo section -->
+            <div class=' flex-auto flex align-stretch'>
+              <img width='250' src="../assets/picture.svg" alt="">
+            </div>
+            <ul class='w-20 flex flex-column'>
+              <li class='flex-auto'><img src="../assets/picture.svg" alt=""></li>
+              <li class='flex-auto'><img src="../assets/picture.svg" alt=""></li>
+              <li class='flex-auto'><img src="../assets/picture.svg" alt=""></li>
+            </ul>
+          </div>
+          <div class='h-half flex flex-column'>
+            <!-- inline tab -->
+            <div class="d-inline-block">
+              <ul class="nav nav-pills nav-fill nav-menu bg-dark text-center">
+                <li class="nav-item w-25">
+                          <a class="nav-link active" data-toggle="tab" href="#menu1">Location</a>
+                </li>
+                <li class="nav-item w-25">
+                  <a class="nav-link" data-toggle="tab" href="#menu2">Facilities</a>
+                </li>
+                <li class="nav-item w-25">
+                    <a class="nav-link" data-toggle="tab" href="#menu3">Rating</a>
+                </li>
+                <li class="nav-item w-25">
+                    <a class="nav-link" data-toggle="tab" href="#menu1">Policies</a>
+                </li>
+              </ul>
+            </div>
+            <!-- tab place -->
+            <div class='flex align-stretch'>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='w-5 flex justify-center items-center'>
+        <div class='purple'> Next</div>
+      </div>
 
+    </div>
+
+    <!-- hotel booking stripe -->
+    <div class='pt1 pb1 mb2 flex flex-column ' v-if='true'>
+        <div class='mb3 f4 b purple'>You Successfully booked the room</div>
+        <div class='flex w-80 items-basline  mb3 bg-light-gray br3 pa2'>
+          <ul class='flex items-center w-90'>
+            <li class="flex flex-column flex-auto">
+              <div class='gray '>Hotel Name</div>
+              <div class='b f6'>Hilton Hotel</div>
+            </li>
+            <li class="flex flex-column flex-auto">
+              <div class='gray '>City</div>
+              <div class='b f6'>Gujarat</div>
+            </li>
+            <li class="flex flex-column flex-auto">
+              <div class='gray '>Date</div>
+              <div class='b f6'>22/feb - 22/feb</div>
+            </li>
+            <li class="flex flex-column flex-auto">
+              <div class='gray '>Near By</div>
+              <div class='b f6'>Airport</div>
+            </li>
+            <li class="flex flex-column flex-auto">
+              <div class='gray '>Guest</div>
+              <div class='b f6'>2</div>
+            </li>
+          </ul>
+          <div class='flex flex-column items-center w-20 bt-0 bb-0 br-0  bw1 bl b--dashed b--purple'>
+              <div class='gray f6'>Booking Id</div>
+              <div class='b f5'>REt-ww3333</div>
+          </div>
+        </div>
+        <div>
+          <button class='btn btn-primary'>Another Booking</button>
+          <button class='btn btn-outline-primary ml3'>Complete Trip</button>
+        </div>
+    </div>
 
   </div>
 </template>
 
-
-
-
-
 <style>
 /* header main layout*/
+:root{
+  font-size: 16px;
+}
 #app{
   position: fixed;
   left:0;
   right:0;
   bottom:0;
   top:0;
+  font-size:0.75rem;
 }
 #nav{
   height: 70px;
@@ -371,9 +525,17 @@ ul{
 }
 .rating label:before{ font-size: 1rem;}
 .rating label:before{ margin:4px; }
+
+/* width */
+.w-5{ width:5%; }
+.w-45{ width:45%; }
 /* height */
+.h-half{height:50%;}
 .h-200{ height: 150px;}
 .f7{font-size:.675rem;}
-
+.h-400{height:450px;}
+.b--purple{
+  border-color:var(--purple);
+}
 </style>
 
