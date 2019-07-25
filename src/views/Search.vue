@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-column">
-    <div class='b purple mb2' v-if='false'>
+    <div class='b purple mb2' v-if='true'>
       New Booking
     </div>
     <!--Tab - sub route -->
-    <div class='nav-folder pa0 mb2' v-if='false'>
+    <div class='nav-folder pa0 mb2' v-if='[view[0],view[1],view[2],view[3]].includes(currentView)'>
       <ul class="nav nav-pills">
           <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#menu1">Room</a>
@@ -15,21 +15,55 @@
       </ul>
     </div>
     <!-- info area -->
-    <div class='pt1 pb1 mb2' v-if='false'>
-      something need to be here
+    <div class='pt1 pb1 mb2' v-if='[view[1],view[2]].includes(currentView)'>
+      <span>Your booking was {{currentBooking.city}}</span>
+      <span v-if='currentView === view[2]'>on {{currentBooking.from}} to {{currentBooking.to}}</span>
     </div>
+
+    <!-- action area / big textbox / input area -->
+    <div class='mb2' v-if='[view[0],view[1],view[2]].includes(currentView)'>
+      <input type="text" v-if='currentView === view[0]' placeholder="Type where you need to go...?" class="form-control form-control-xl bn f3">
+      <input type="text" v-if='currentView === view[1]' placeholder="when you need to go...?" class="form-control form-control-xl bn f3">
+      <!-- no of person input -->
+      <div class='flex items-center f3 w-40' v-if='currentView === view[2]'>
+        <div><i class="fa fa-minus-circle" :class='{"light-gray": currentBooking.pax === 0 }' aria-hidden="true" @click='currentBooking.pax > 0 && currentBooking.pax--'></i></div>
+        <div class='flex-auto tc'>
+          <input type="text" v-model='currentBooking.pax'  placeholder="No of Persons" class="form-control form-control-xl bn f3 tc">
+        </div>
+        <div><i class="fa fa-plus-circle" aria-hidden="true" @click='currentBooking.pax++'></i></div>
+      </div>
+      <!-- progress bar -->
+      <div class="progress progress-sm mb-3" >
+          <div class="progress-bar" role="progressbar"  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
+              :class='{"w-25": currentView === view[0],"w-50": currentView === view[1],"w-75": currentView === view[2]}'>
+              
+          </div>
+      </div>
+      <!-- action buttons -->
+      <div class='flex justify-between items-center' >
+        <div class="flex items-center">
+          <button class="btn btn-light" v-show='step > 0' @click='step--'>Back</button>
+        </div>
+        <div class='w-20 flex items-center justify-between'>
+          <button class="btn btn-light" @click='step++'>Skip</button>
+          <button class='btn btn-primary' @click='step++'>Next</button>
+        </div>
+      </div>
+
+    </div>
+    
     <!-- search meta data -->
-    <div class='pt1 pb1 mb2 flex flex-column' v-if='false'>
+    <div class='pt1 pb1 mb2 flex flex-column' v-if='view[3] === currentView'>
         <div class='mb2'>Hotel List result of</div>
         <div class='flex w-75 items-center  mb2'>
           <ul class='flex items-center w-80'>
             <li class="flex flex-column flex-auto">
               <div class='gray f6'>City</div>
-              <div class='b'>Gujarat</div>
+              <div class='b'>{{currentBooking.city}}</div>
             </li>
             <li class="flex flex-column flex-auto">
               <div class='gray f6'>Date</div>
-              <div class='b'>22/feb - 22/feb</div>
+              <div class='b'>{{currentBooking.from}} - {{currentBooking.to}}</div>
             </li>
             <li class="flex flex-column flex-auto">
               <div class='gray f6'>Near By</div>
@@ -37,16 +71,16 @@
             </li>
             <li class="flex flex-column flex-auto">
               <div class='gray f6'>Guest</div>
-              <div class='b'>2</div>
+              <div class='b'>{{currentBooking.pax}}</div>
             </li>
           </ul>
           <div class='flex justify-center items-center w-20'>
-            <button class="btn btn-outline-primary btn-sm">Modify Search</button>
+            <button class="btn btn-outline-primary btn-sm" @click='step--'>Modify Search</button>
           </div>
         </div>
     </div>
     <!-- hotel listing area -->
-    <div class='bg-light-gray pt2 pb2 flex items-stretch' v-if='false'>
+    <div class='bg-light-gray pt2 pb2 flex items-stretch' v-if='view[3] === currentView'>
       <div class='flex w-100'>
         <!-- filter potion -->
         <div class='w-20 bg-white ml2 pa3'>
@@ -204,7 +238,7 @@
                                 </div>
                                 <div class="red f7 pb2">3 rooms remaining</div>
                                 <div clas=''>
-                                  <button class="btn btn-primary btn-sm">Get Approve</button>
+                                  <button class="btn btn-primary btn-sm" @click='currentBooking.hotel = "Hilton",step++'>Get Approve</button>
                                 </div>
                             </div>
                         </div>
@@ -214,53 +248,26 @@
         </div>
       </div>
     </div>
-    <!-- action area -->
-    <div class='mb2' v-if='false'>
-      <input type="text" v-if='true' placeholder="Type where to go...?" class="form-control form-control-xl bn f3">
-      <div class='flex items-center f3 w-40'>
-        <div><i class="fa fa-minus-circle" aria-hidden="true"></i></div>
-        <div class='flex-auto tc'>
-          <input type="text"  placeholder="No of Persons" class="form-control form-control-xl bn f3 tc">
-        </div>
-        <div><i class="fa fa-plus-circle" aria-hidden="true"></i></div>
-      </div>
-      <!-- progress bar -->
-      <div class="progress progress-sm mb-3">
-          <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100">
-              
-          </div>
-      </div>
-      <!-- action buttons -->
-      <div class='flex justify-between items-center'>
-        <div class="flex items-center">
-          <button class="btn btn-light">Back</button>
-        </div>
-        <div class='w-20 flex items-center justify-between'>
-          <button class="btn btn-light">Skip</button>
-          <button class='btn btn-primary'>Next</button>
-        </div>
-      </div>
-
-    </div>
+    
     <!-- city listing area -->
-    <div class='flex flex-column' v-if='false'>
+    <div class='flex flex-column' v-if='currentView === view[0]'>
       <div class='pt2 pb2'>often Destination</div>
       <ul class='flex flex-column pa0 h-100 overflow-y'>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'>
+        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
           <div>Banglore</div>
           <div class='flex flex-column tr'>
             <span>56</span>
             <span>Hotels</span>
           </div>
         </li>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'>
+        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
           <div>Banglore</div>
           <div class='flex flex-column tr'>
             <span>56</span>
             <span>Hotels</span>
           </div>
         </li>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'>
+        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
           <div>Banglore</div>
           <div class='flex flex-column tr'>
             <span>56</span>
@@ -277,14 +284,21 @@
         
       </ul>
     </div>
+    <!-- calender -->
+    <div class='' v-if='currentView === view[1]'>
+      <div clas='flex mt3'>
+        <v-md-date-range-picker @change='sample'  :minDate='(new Date())' />
+      </div>
+    </div>
     <!-- employee listing area -->
-    <div v-if='false'>
+    <div v-if='currentView === view[2]'>
       <div class='pt2 pb2 b fw5'>Guest with you</div>
       <div class='flex items-stretch '>
         <div class='flex flex-column w-25 bg-light-gray'>
           <div class='mt3 '>
             <button class="btn btn-outline-primary btn-sm ml4">For me</button>
           </div>
+          <!-- department listing panel -->
           <ul class='gray flex flex-column mt3'>
             <li class='white bg-purple tl pa1 pl4'>Marketing</li>
             <li class='tl pa1 pl4'>Sales Team</li>
@@ -299,7 +313,7 @@
           <ul class='flex flex-column'>
             <li class='flex'>
               <div class='pa2'>
-                <img width='100' height='100' src="../assets/picture.svg" alt="">
+                <img class='ba b--light-silver' width='100' height='100' src="https://robohash.org/search?set=2&size=100x100" alt="">
               </div>
               <div class='flex-auto flex flex-column pa2'>
                 <div class='pa1'>Suresh</div>
@@ -312,7 +326,7 @@
             </li>
             <li class='flex'>
               <div class='pa2'>
-                <img width='100' height='100' src="../assets/picture.svg" alt="">
+                <img class='ba b--light-silver'  width='100' height='100' src="https://robohash.org/searchs?set=2&size=100x100" alt="">
               </div>
               <div class='flex-auto flex flex-column pa2'>
                 <div class='pa1'>Ram</div>
@@ -447,21 +461,21 @@
     </div>
 
     <!-- hotel booking stripe -->
-    <div class='pt1 pb1 mb2 flex flex-column ' v-if='true'>
+    <div class='pt1 pb1 mb2 flex flex-column ' v-if='false'>
         <div class='mb3 f4 b purple'>You Successfully booked the room</div>
         <div class='flex w-80 items-basline  mb3 bg-light-gray br3 pa2'>
           <ul class='flex items-center w-90'>
             <li class="flex flex-column flex-auto">
               <div class='gray '>Hotel Name</div>
-              <div class='b f6'>Hilton Hotel</div>
+              <div class='b f6'>{{currentBooking.hotel}}</div>
             </li>
             <li class="flex flex-column flex-auto">
               <div class='gray '>City</div>
-              <div class='b f6'>Gujarat</div>
+              <div class='b f6'>{{currentBooking.city}}</div>
             </li>
             <li class="flex flex-column flex-auto">
               <div class='gray '>Date</div>
-              <div class='b f6'>22/feb - 22/feb</div>
+              <div class='b f6'>{{currentBooking.from}} - {{currentBooking.to}}</div>
             </li>
             <li class="flex flex-column flex-auto">
               <div class='gray '>Near By</div>
@@ -469,7 +483,7 @@
             </li>
             <li class="flex flex-column flex-auto">
               <div class='gray '>Guest</div>
-              <div class='b f6'>2</div>
+              <div class='b f6'>{{currentBooking.pax}}</div>
             </li>
           </ul>
           <div class='flex flex-column items-center w-20 bt-0 bb-0 br-0  bw1 bl b--dashed b--purple'>
@@ -478,7 +492,7 @@
           </div>
         </div>
         <div>
-          <button class='btn btn-primary'>Another Booking</button>
+          <button class='btn btn-primary' @click='step = 1,flush()'>Another Booking</button>
           <button class='btn btn-outline-primary ml3'>Complete Trip</button>
         </div>
     </div>
@@ -486,25 +500,65 @@
   </div>
 </template>
 <script>
+import Vue from 'vue'
+import VMdDateRangePicker from "v-md-date-range-picker";
+import "v-md-date-range-picker/dist/v-md-date-range-picker.css";
+// import api from '../api'
+
+Vue.use(VMdDateRangePicker);
+// a.$on('change',function(){
+//   consol.log('hi')
+// })
 export default {
   name: 'search',
+  // components : { VMdDateRangePicker },
   data: function(){
     return {
       view: ["City","Date","Person","Hotel","Complete","Hotel-Profile"],
-      step: 1,
+      step: 0,
       cityList: [],
       hotelList: [],
       employeeList: [],
-      currentBooking: [],
-      
-
+      currentBooking: {
+        hotel:"",
+        city:"",
+        from:"",
+        fromDateObj: {},
+        toDateObj:{},
+        to:"",
+        pax: 0,
+        locality:""
+      },
 
     }
   },
   methods: {
-
+    sample: function(data){
+      this.currentBooking.fromDateObj = data[0]._d;
+      this.currentBooking.toDateObj = data[1]._d;
+      this.currentBooking.from = data[0].format("DD MMM YYYY");
+      this.currentBooking.to = data[1].format("DD MMM YYYY");
+    },
+    flush: function(){
+      for(let i in this.currentBooking){
+        if(i === "fromDateObj" || i === "toDateObj" ){
+          this.currentBooking[i] = {};
+          continue;
+        }
+        if(i === 'pax'){
+          this.currentBooking['pax'] = 0;
+          continue;
+        }
+        this.currentBooking[i] = ""
+      }
+    }
   },
   computed: {
+    currentView(){
+      return this.view[this.step]
+    }
+  },
+  created(){
 
   }
 
@@ -522,7 +576,7 @@ export default {
   right:0;
   bottom:0;
   top:0;
-  font-size:0.75rem;
+  font-size:0.875rem;
 }
 #nav{
   height: 70px;
