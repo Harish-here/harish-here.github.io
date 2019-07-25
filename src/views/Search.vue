@@ -485,6 +485,31 @@
 
   </div>
 </template>
+<script>
+export default {
+  name: 'search',
+  data: function(){
+    return {
+      view: ["City","Date","Person","Hotel","Complete","Hotel-Profile"],
+      step: 1,
+      cityList: [],
+      hotelList: [],
+      employeeList: [],
+      currentBooking: [],
+      
+
+
+    }
+  },
+  methods: {
+
+  },
+  computed: {
+
+  }
+
+}
+</script>
 
 <style>
 /* header main layout*/
