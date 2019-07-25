@@ -1,4 +1,4 @@
-## A App for hotel searching
+## An App for hotel searching
 
 
 
