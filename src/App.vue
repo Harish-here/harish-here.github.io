@@ -12,7 +12,8 @@
       </div>
     </header>
     <section id='action-area' class='flex flex-auto justify-center'>
-      <div class="w-60 h-100 bl br b--light-silver">
+      <!-- bl br b--light-silver  -->
+      <div class="w-60 h-100 ">
         <router-view/>
       </div>
     </section>

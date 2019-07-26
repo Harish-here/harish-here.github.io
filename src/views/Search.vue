@@ -461,7 +461,7 @@
     </div>
 
     <!-- hotel booking stripe -->
-    <div class='pt1 pb1 mb2 flex flex-column ' v-if='false'>
+    <div class='pt1 pb1 mb2 flex flex-column ' v-if='view[4] === currentView'>
         <div class='mb3 f4 b purple'>You Successfully booked the room</div>
         <div class='flex w-80 items-basline  mb3 bg-light-gray br3 pa2'>
           <ul class='flex items-center w-90'>
@@ -492,8 +492,8 @@
           </div>
         </div>
         <div>
-          <button class='btn btn-primary' @click='step = 1,flush()'>Another Booking</button>
-          <button class='btn btn-outline-primary ml3'>Complete Trip</button>
+          <button class='btn btn-primary' @click='step = 0,flush()'>Another Booking</button>
+          <button class='btn btn-outline-primary ml3' @click='step = 0,flush()'>Complete Trip</button>
         </div>
     </div>
 
