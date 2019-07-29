@@ -4,7 +4,7 @@
       New Booking
     </div>
     <!--Tab - sub route -->
-    <div class='nav-folder pa0 mb2' v-if='[view[0],view[1],view[2],view[3]].includes(currentView)'>
+    <div class='nav-folder pa0 mb2' v-if='[view[0],view[1],view[2],view[3],view[4]].includes(currentView)'>
       <ul class="nav nav-pills">
           <li class="nav-item">
               <a class="nav-link active" data-toggle="tab" href="#menu1">Room</a>
@@ -15,17 +15,19 @@
       </ul>
     </div>
     <!-- info area -->
-    <div class='pt1 pb1 mb2' v-if='[view[1],view[2]].includes(currentView)'>
+    <div class='pt1 pb1 mb2' v-if='[view[1],view[2],view[3],view[4]].includes(currentView)'>
       <span>Your booking was {{currentBooking.city}}</span>
-      <span v-if='currentView === view[2]'>on {{currentBooking.from}} to {{currentBooking.to}}</span>
+      <span v-if='step >= 2'> ({{currentBooking['locality']}})</span> 
+      <span v-if='step >= 4'>on {{currentBooking.from}} to {{currentBooking.to}}</span>
     </div>
 
     <!-- action area / big textbox / input area -->
-    <div class='mb2' v-if='[view[0],view[1],view[2]].includes(currentView)'>
+    <div class='mb2' v-if='[view[0],view[1],view[2],view[3]].includes(currentView)'>
       <input type="text" v-if='currentView === view[0]' placeholder="Type where you need to go...?" class="form-control form-control-xl bn f3">
-      <input type="text" v-if='currentView === view[1]' placeholder="when you need to go...?" class="form-control form-control-xl bn f3">
+      <input type="text" v-if='currentView === view[1]' :placeholder='"Type where you need to go in "+currentBooking["city"] +" ...?"' class="form-control form-control-xl bn f3">
+      <input type="text" v-if='currentView === view[2]' placeholder="when you need to go...?" class="form-control form-control-xl bn f3">
       <!-- no of person input -->
-      <div class='flex items-center f3 w-40' v-if='currentView === view[2]'>
+      <div class='flex items-center f3 w-40' v-if='currentView === view[3]'>
         <div><i class="fa fa-minus-circle" :class='{"light-gray": currentBooking.pax === 0 }' aria-hidden="true" @click='currentBooking.pax > 0 && currentBooking.pax--'></i></div>
         <div class='flex-auto tc'>
           <input type="text" v-model='currentBooking.pax'  placeholder="No of Persons" class="form-control form-control-xl bn f3 tc">
@@ -35,7 +37,7 @@
       <!-- progress bar -->
       <div class="progress progress-sm mb-3" >
           <div class="progress-bar" role="progressbar"  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
-              :class='{"w-25": currentView === view[0],"w-50": currentView === view[1],"w-75": currentView === view[2]}'>
+              :class='{"w-10": currentView === view[0], "w-30": currentView === view[1],"w-50": currentView === view[2],"w-75": currentView === view[3]}'>
               
           </div>
       </div>
@@ -53,7 +55,7 @@
     </div>
     
     <!-- search meta data -->
-    <div class='pt1 pb1 mb2 flex flex-column' v-if='view[3] === currentView'>
+    <div class='pt1 pb1 mb2 flex flex-column' v-if='view[4] === currentView'>
         <div class='mb2'>Hotel List result of</div>
         <div class='flex w-75 items-center  mb2'>
           <ul class='flex items-center w-80'>
@@ -80,7 +82,7 @@
         </div>
     </div>
     <!-- hotel listing area -->
-    <div class='bg-light-gray pt2 pb2 flex items-stretch' v-if='view[3] === currentView'>
+    <div class='bg-light-gray pt2 pb2 flex items-stretch' v-if='view[4] === currentView'>
       <div class='flex w-100'>
         <!-- filter potion -->
         <div class='w-20 bg-white ml2 pa3'>
@@ -284,14 +286,50 @@
         
       </ul>
     </div>
+
+    <!-- locality listing area -->
+    <div class='flex flex-column' v-if='currentView === view[1]'>
+      <div class='pt2 pb2'>locality of {{currentBooking["city"]}}</div>
+      <ul class='flex flex-column pa0 h-100 overflow-y'>
+        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.locality = "shollinganallur",step++'>
+          <div>sholinganallur</div>
+          <div class='flex flex-column tr'>
+            <span>56</span>
+            <span>Hotels</span>
+          </div>
+        </li>
+        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
+          <div>Banglore</div>
+          <div class='flex flex-column tr'>
+            <span>56</span>
+            <span>Hotels</span>
+          </div>
+        </li>
+        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
+          <div>Banglore</div>
+          <div class='flex flex-column tr'>
+            <span>56</span>
+            <span>Hotels</span>
+          </div>
+        </li>
+        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'>
+          <div>Banglore</div>
+          <div class='flex flex-column tr'>
+            <span>56</span>
+            <span>Hotels</span>
+          </div>
+        </li>
+        
+      </ul>
+    </div>
     <!-- calender -->
-    <div class='' v-if='currentView === view[1]'>
+    <div class='' v-if='currentView === view[2]'>
       <div clas='flex mt3'>
-        <v-md-date-range-picker @change='sample'  :minDate='(new Date())' />
+        <!-- <v-md-date-range-picker @change='sample'  :minDate='(new Date())' /> -->
       </div>
     </div>
     <!-- employee listing area -->
-    <div v-if='currentView === view[2]'>
+    <div v-if='currentView === view[3]'>
       <div class='pt2 pb2 b fw5'>Guest with you</div>
       <div class='flex items-stretch '>
         <div class='flex flex-column w-25 bg-light-gray'>
@@ -461,7 +499,7 @@
     </div>
 
     <!-- hotel booking stripe -->
-    <div class='pt1 pb1 mb2 flex flex-column ' v-if='view[4] === currentView'>
+    <div class='pt1 pb1 mb2 flex flex-column ' v-if='view[5] === currentView'>
         <div class='mb3 f4 b purple'>You Successfully booked the room</div>
         <div class='flex w-80 items-basline  mb3 bg-light-gray br3 pa2'>
           <ul class='flex items-center w-90'>
@@ -500,25 +538,22 @@
   </div>
 </template>
 <script>
-import Vue from 'vue'
-import VMdDateRangePicker from "v-md-date-range-picker";
-import "v-md-date-range-picker/dist/v-md-date-range-picker.css";
+// import Vue from 'vue'
+// import VMdDateRangePicker from "v-md-date-range-picker";
+// import "v-md-date-range-picker/dist/v-md-date-range-picker.css";
 // import api from '../api'
 
-Vue.use(VMdDateRangePicker);
-// a.$on('change',function(){
-//   consol.log('hi')
-// })
+// Vue.use(VMdDateRangePicker);
+import api from '../utility/api'
+import { post, get } from '../utility/request'
+
 export default {
   name: 'search',
   // components : { VMdDateRangePicker },
   data: function(){
     return {
-      view: ["City","Date","Person","Hotel","Complete","Hotel-Profile"],
+      view: ["City","locality","Date","Person","Hotel","Complete","Hotel-Profile"],
       step: 0,
-      cityList: [],
-      hotelList: [],
-      employeeList: [],
       currentBooking: {
         hotel:"",
         city:"",
@@ -527,7 +562,8 @@ export default {
         toDateObj:{},
         to:"",
         pax: 0,
-        locality:""
+        locality:"",
+        guest: []
       },
 
     }
@@ -559,7 +595,11 @@ export default {
     }
   },
   created(){
-
+    const employee = get(api.getEmployee);
+    employee
+    .then((data) => {
+      console.log(data.body)
+    })
   }
 
 }
