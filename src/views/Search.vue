@@ -22,7 +22,7 @@
     </div>
 
     <!-- action area / big textbox / input area -->
-    <div class='mb2' v-if='[view[0],view[1],view[2],view[3]].includes(currentView)'>
+    <div class='mb4' v-if='[view[0],view[1],view[2],view[3]].includes(currentView)'>
       <input type="text" v-if='currentView === view[0]' placeholder="Type where you need to go...?" class="form-control form-control-xl bn f3">
       <input type="text" v-if='currentView === view[1]' :placeholder='"Type where you need to go in "+currentBooking["city"] +" ...?"' class="form-control form-control-xl bn f3">
       <input type="text" v-if='currentView === view[2]' placeholder="when you need to go...?" class="form-control form-control-xl bn f3">
@@ -253,8 +253,8 @@
     
     <!-- city listing area -->
     <div class='flex flex-column' v-if='currentView === view[0]'>
-      <div class='pt2 pb2'>often Destination</div>
-      <ul class='flex flex-column pa0 h-100 overflow-y'>
+      <div class='pt2 pb2 b'>often Destination</div>
+      <ul class='flex flex-column pa0 h-100 overflow-y pointer'>
         <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
           <div>Banglore</div>
           <div class='flex flex-column tr'>
@@ -289,7 +289,7 @@
 
     <!-- locality listing area -->
     <div class='flex flex-column' v-if='currentView === view[1]'>
-      <div class='pt2 pb2'>locality of {{currentBooking["city"]}}</div>
+      <div class='pt2 pb2 b'>locality of {{currentBooking["city"]}}</div>
       <ul class='flex flex-column pa0 h-100 overflow-y'>
         <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.locality = "shollinganallur",step++'>
           <div>sholinganallur</div>
@@ -334,7 +334,7 @@
       <div class='flex items-stretch '>
         <div class='flex flex-column w-25 bg-light-gray'>
           <div class='mt3 '>
-            <button class="btn btn-outline-primary btn-sm ml4">For me</button>
+            <button class="btn btn-outline-primary btn-sm ml4" @click='currentBooking["pax"] = 1'>For me</button>
           </div>
           <!-- department listing panel -->
           <ul class='gray flex flex-column mt3'>
