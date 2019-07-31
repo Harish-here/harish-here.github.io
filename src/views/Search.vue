@@ -18,14 +18,14 @@
     <div class='pt1 pb1 mb2' v-if='[view[1],view[2],view[3],view[4]].includes(currentView)'>
       <span>Your booking was {{currentBooking.city}}</span>
       <span v-if='step >= 2'> ({{currentBooking['locality']}})</span> 
-      <span v-if='step >= 4'>on {{currentBooking.from}} to {{currentBooking.to}}</span>
+      <span v-if='step >= 3'> on {{currentBooking.from}} to {{currentBooking.to}}</span>
     </div>
 
     <!-- action area / big textbox / input area -->
     <div class='mb4' v-if='[view[0],view[1],view[2],view[3]].includes(currentView)'>
       <input type="text" v-if='currentView === view[0]' placeholder="Type where you need to go...?" class="form-control form-control-xl bn f3">
       <input type="text" v-if='currentView === view[1]' :placeholder='"Type where you need to go in "+currentBooking["city"] +" ...?"' class="form-control form-control-xl bn f3">
-      <input type="text" v-if='currentView === view[2]' placeholder="when you need to go...?" class="form-control form-control-xl bn f3">
+      <input type="text" v-if='currentView === view[2]' :value='selectedDate' placeholder="when you need to go...?" class="form-control form-control-xl bn f3">
       <!-- no of person input -->
       <div class='flex items-center f3 w-40' v-if='currentView === view[3]'>
         <div><i class="fa fa-minus-circle" :class='{"light-gray": currentBooking.pax === 0 }' aria-hidden="true" @click='currentBooking.pax > 0 && currentBooking.pax--'></i></div>
@@ -56,7 +56,7 @@
     
     <!-- search meta data -->
     <div class='pt1 pb1 mb2 flex flex-column' v-if='view[4] === currentView'>
-        <div class='mb2'>Hotel List result of</div>
+        <div class='mb2 fw5'>Hotel List result of</div>
         <div class='flex w-75 items-center  mb2'>
           <ul class='flex items-center w-80'>
             <li class="flex flex-column flex-auto">
@@ -152,7 +152,7 @@
                                 <img src="../assets/picture.svg" width="150px" class="img-fluid">
                             </div>
                             <div class="col flex flex-column">
-                                <h6 class=''>Ammenities(16)</h6>
+                                <h6 class=''>Ammenities(+16)</h6>
                                 <div class='flex flex-auto justify-center tc'>
                                   <ul class='flex flex-wrap justify-around items-start'>
                                     <li class='flex pa1 gray flex-column w-50'>
@@ -190,7 +190,6 @@
               
                                   </ul>
                                 </div>
-                                
                             </div>
                             <div class="col flex flex-column">
                                 <h6 class=''>Accesibility</h6>
@@ -239,8 +238,11 @@
                                     <label for="st5"></label>
                                 </div>
                                 <div class="red f7 pb2">3 rooms remaining</div>
-                                <div clas=''>
+                                <div class='pb2'>
                                   <button class="btn btn-primary btn-sm" @click='currentBooking.hotel = "Hilton",step++'>Get Approve</button>
+                                </div>
+                                <div class=''>
+                                  <button class="btn btn-outline-primary btn-sm" @click='step = 6'>View Details</button>
                                 </div>
                             </div>
                         </div>
@@ -290,7 +292,7 @@
     <!-- locality listing area -->
     <div class='flex flex-column' v-if='currentView === view[1]'>
       <div class='pt2 pb2 b'>locality of {{currentBooking["city"]}}</div>
-      <ul class='flex flex-column pa0 h-100 overflow-y'>
+      <ul class='flex flex-column pa0 h-100 overflow-y pointer'>
         <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.locality = "shollinganallur",step++'>
           <div>sholinganallur</div>
           <div class='flex flex-column tr'>
@@ -323,9 +325,10 @@
       </ul>
     </div>
     <!-- calender -->
-    <div class='' v-if='currentView === view[2]'>
-      <div clas='flex mt3'>
-        <!-- <v-md-date-range-picker @change='sample'  :minDate='(new Date())' /> -->
+    <div class=' flex align-stretch w-100' v-if='currentView === view[2]'>
+      <div clas='flex mt3 justify-center flex-auto'>
+       
+        <VRangeSelector :start-date.sync='currentBooking.fromDateObj' :disabled-dates='{to: (new Date())}' :end-date.sync='currentBooking.toDateObj' />
       </div>
     </div>
     <!-- employee listing area -->
@@ -380,9 +383,9 @@
       </div>
     </div>
     <!-- hotel profile page -->
-    <div class='flex bg-light-gray h-400 align-stretch' v-if='false'>
+    <div class='flex bg-light-gray h-400 align-stretch' v-if='view[6] === currentView'>
       <div class=' w-5 flex justify-center items-center'>
-        <div class='purple'> Pre</div>
+        <div class='purple'> < Pre</div>
       </div>
       <!-- hotel card section -->
       <div class='w-45 pa2 flex align-stretch'>
@@ -493,7 +496,7 @@
         </div>
       </div>
       <div class='w-5 flex justify-center items-center'>
-        <div class='purple'> Next</div>
+        <div class='purple'> Next ></div>
       </div>
 
     </div>
@@ -538,18 +541,16 @@
   </div>
 </template>
 <script>
-// import Vue from 'vue'
-// import VMdDateRangePicker from "v-md-date-range-picker";
-// import "v-md-date-range-picker/dist/v-md-date-range-picker.css";
-// import api from '../api'
-
-// Vue.use(VMdDateRangePicker);
+// import DatePicker from 'vuejs-datepicker';
+import VRangeSelector from 'vuelendar/components/vl-range-selector';
+import { format, startOfTomorrow, addDays, isAfter } from 'date-fns';
+import { isEmptyString, formatDate } from '../utility/utility'
 import api from '../utility/api'
-import { post, get } from '../utility/request'
+import "vuelendar/scss/vuelendar.scss"
 
 export default {
   name: 'search',
-  // components : { VMdDateRangePicker },
+  components : {  VRangeSelector },
   data: function(){
     return {
       view: ["City","locality","Date","Person","Hotel","Complete","Hotel-Profile"],
@@ -558,23 +559,27 @@ export default {
         hotel:"",
         city:"",
         from:"",
-        fromDateObj: {},
-        toDateObj:{},
+        fromDateObj: startOfTomorrow(),
+        toDateObj: addDays(startOfTomorrow(),1),
         to:"",
-        pax: 0,
+        pax: "",
         locality:"",
         guest: []
       },
-
     }
   },
-  methods: {
-    sample: function(data){
-      this.currentBooking.fromDateObj = data[0]._d;
-      this.currentBooking.toDateObj = data[1]._d;
-      this.currentBooking.from = data[0].format("DD MMM YYYY");
-      this.currentBooking.to = data[1].format("DD MMM YYYY");
+  watch: {
+    'currentBooking.fromDateObj': function(val){
+      this.currentBooking.from = formatDate(new Date(val));
     },
+
+    'currentBooking.toDateObj': function(val){
+      this.currentBooking.to = formatDate(new Date(val));
+    }
+  },
+  
+  methods: {
+    
     flush: function(){
       for(let i in this.currentBooking){
         if(i === "fromDateObj" || i === "toDateObj" ){
@@ -592,20 +597,38 @@ export default {
   computed: {
     currentView(){
       return this.view[this.step]
-    }
+    },
+    selectedDate(){
+      let selectedDate = '';
+
+      if(isEmptyString(this.currentBooking.from)){
+        return ""
+      }
+      
+      selectedDate += formatDate(new Date(this.currentBooking.fromDateObj))
+
+      if(isEmptyString(this.currentBooking.to)){
+        return selectedDate
+      }
+      
+      
+      selectedDate += ' - ' + formatDate(new Date(this.currentBooking.toDateObj))
+
+      return selectedDate
+    },
   },
   created(){
-    const employee = get(api.getEmployee);
-    employee
-    .then((data) => {
-      console.log(data.body)
-    })
+    // const employee = get(api.getEmployee);
+    // employee.then(data => {
+    //   console.log(data.body)
+    // })
+    // this.$store.commit('getEmployees')
   }
 
 }
 </script>
 
-<style>
+<style >
 /* header main layout*/
 :root{
   font-size: 16px;
@@ -654,7 +677,7 @@ ul{
 .f7{font-size:.675rem;}
 .h-400{height:450px;}
 .b--purple{
-  border-color:var(--purple);
+  border-color: var(--purple);
 }
 </style>
 
