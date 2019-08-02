@@ -13,9 +13,9 @@
     </header>
     <section id='action-area' class='flex flex-auto justify-center'>
       <!-- bl br b--light-silver  -->
-      <div class="w-60 h-100 ">
+    
         <router-view/>
-      </div>
+      
     </section>
     
   </div>
