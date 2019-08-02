@@ -257,35 +257,16 @@
     <div class='flex flex-column' v-if='currentView === view[0]'>
       <div class='pt2 pb2 b'>often Destination</div>
       <ul class='flex flex-column pa0 h-100 overflow-y pointer'>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
-          <div>Banglore</div>
+        <li v-for='i in oftenList'
+            :key='i.cityId'
+            class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'
+            @click='currentBooking.city = i.cityName,currentBooking.cityId = i.cityId,step++'>
+          <div>{{i.cityName}}</div>
           <div class='flex flex-column tr'>
-            <span>56</span>
+            <span>{{i.hotelFound}}</span>
             <span>Hotels</span>
           </div>
         </li>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
-          <div>Banglore</div>
-          <div class='flex flex-column tr'>
-            <span>56</span>
-            <span>Hotels</span>
-          </div>
-        </li>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
-          <div>Banglore</div>
-          <div class='flex flex-column tr'>
-            <span>56</span>
-            <span>Hotels</span>
-          </div>
-        </li>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'>
-          <div>Banglore</div>
-          <div class='flex flex-column tr'>
-            <span>56</span>
-            <span>Hotels</span>
-          </div>
-        </li>
-        
       </ul>
     </div>
 
@@ -293,35 +274,16 @@
     <div class='flex flex-column' v-if='currentView === view[1]'>
       <div class='pt2 pb2 b'>locality of {{currentBooking["city"]}}</div>
       <ul class='flex flex-column pa0 h-100 overflow-y pointer'>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.locality = "shollinganallur",step++'>
-          <div>sholinganallur</div>
+        <li v-for='i in localityList'
+            :key='i.localityId'
+            class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'
+            @click='currentBooking.locality = i.localityName,currentBooking.localityId = i.localityId,step++'>
+          <div>{{i.localityName}}</div>
           <div class='flex flex-column tr'>
-            <span>56</span>
+            <span>{{i.hotelFound}}</span>
             <span>Hotels</span>
           </div>
         </li>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
-          <div>Banglore</div>
-          <div class='flex flex-column tr'>
-            <span>56</span>
-            <span>Hotels</span>
-          </div>
-        </li>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray' @click='currentBooking.city = "Banglore",step++'>
-          <div>Banglore</div>
-          <div class='flex flex-column tr'>
-            <span>56</span>
-            <span>Hotels</span>
-          </div>
-        </li>
-        <li class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'>
-          <div>Banglore</div>
-          <div class='flex flex-column tr'>
-            <span>56</span>
-            <span>Hotels</span>
-          </div>
-        </li>
-        
       </ul>
     </div>
     <!-- calender -->
@@ -556,14 +518,17 @@ export default {
       view: ["City","locality","Date","Person","Hotel","Complete","Hotel-Profile"],
       step: 0,
       currentBooking: {
-        hotel:"",
-        city:"",
+        hotel: "",
+        hotelId: "",
+        city: "",
+        cityId: "",
+        locality:"",
+        localityId:"",
         from:"",
         fromDateObj: startOfTomorrow(),
         toDateObj: addDays(startOfTomorrow(),1),
         to:"",
         pax: "",
-        locality:"",
         guest: []
       },
     }
@@ -598,6 +563,7 @@ export default {
     currentView(){
       return this.view[this.step]
     },
+    // This is to show the selected date
     selectedDate(){
       let selectedDate = '';
 
@@ -616,13 +582,30 @@ export default {
 
       return selectedDate
     },
+
+    hotelsList(){
+      return this.$store.state.hotelsList
+    },
+
+    cityList(){
+      return this.$store.state.citiesList
+    },
+
+    employeeList(){
+      return this.$store.state.employeesList
+    },
+
+    localityList(){
+      return this.$store.state.localityList
+    },
+
+    oftenList(){
+      return this.$store.state.citiesList.slice(24)
+    }
+
   },
   created(){
-    // const employee = get(api.getEmployee);
-    // employee.then(data => {
-    //   console.log(data.body)
-    // })
-    // this.$store.commit('getEmployees')
+    
   }
 
 }
