@@ -755,7 +755,7 @@ ul{
 
 /* sugesstion box wrapper position */
 .top-4{
-  top:4.75rem;
+  top: 5rem;
 }
 </style>
 
