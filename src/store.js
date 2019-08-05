@@ -38,7 +38,7 @@ export default new Vuex.Store({
       });
     },
     getLocalities: (state) => {
-      const locality = get(api.getEmployee);
+      const locality = get(api.getLocality);
       locality.then(data => {
         state.localityList = data.body;
       })

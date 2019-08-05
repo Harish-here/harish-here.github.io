@@ -24,7 +24,7 @@
 export default {
   name: 'root',
   created(){
-    this.$store.dispatch('initiateState')
+   
   }
 
 }

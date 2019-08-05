@@ -64,12 +64,59 @@
     <!-- second section of the page contains inputs & action buttons -->
     <section class='flex flex-columm align-stretch w-60'>
       <!-- action area / big textbox / input area -->
-      <div class='mb4 flex-auto flex flex-column' v-if='[view[0],view[1],view[2],view[3]].includes(currentView)'>
-        <input type="text" v-if='currentView === view[0]' placeholder="Type where you need to go...?" class="form-control form-control-xl bn f3">
-        <input type="text" v-if='currentView === view[1]' :placeholder='"Type where you need to go in "+currentBooking["city"] +" ...?"' class="form-control form-control-xl bn f3">
-        <input type="text" v-if='currentView === view[2]' :value='selectedDate' placeholder="when you need to go...?" class="form-control form-control-xl bn f3">
+      <div class='mb4 flex-auto flex flex-column relative' v-if='[view[0],view[1],view[2],view[3]].includes(currentView)'>
+        <!-- city text box + suggestion box -->
+        <input type="search"
+               v-if='currentView === view[0]'
+               @keydown.down='suggestionBoxActiveIndex++'
+               @keydown.up='(suggestionBoxActiveIndex < 0) ? "" : suggestionBoxActiveIndex--'
+               @keydown.enter='isUserPressedEnter = true'
+               @focusin='showSuggestion = true'
+               @blur='(suggestionBoxActiveIndex === -1) ? showSuggestion = false: ""'
+               v-model='cityInputString'
+               placeholder="Type where you need to go...?"
+               class="form-control form-control-xl bn f3 mb3" 
+               />
+          
+        <!-- end of city -->
+        <!-- locality search -->
+        <input type="search"
+               v-if='currentView === view[1]'
+               @keydown.down='suggestionBoxActiveIndex++'
+               @keydown.up='(suggestionBoxActiveIndex < 0) ? "" : suggestionBoxActiveIndex--'
+               @keydown.enter='isUserPressedEnter = true'
+               @focusin='showSuggestion = true'
+               @blur='(suggestionBoxActiveIndex === -1) ? showSuggestion = false: ""'
+               :placeholder='"Type where you need to go in "+currentBooking["city"] +" ...?"'
+               class="form-control form-control-xl bn mb3 f3"
+               />
+        <input type="text" v-if='currentView === view[2]' :value='selectedDate' placeholder="when you need to go...?" class="form-control form-control-xl bn f3 mb3">
+        
+        <!-- suggestion box for both locality & city -->
+        <div v-show='showSuggestion'
+             class='absolute bg-white left-0 right-0 top-4 overflow-y-auto' style='height:450px;z-index:2000;'>
+            <suggestionBox v-if='currentView === view[0]'
+                           :isSearchable='true' 
+                           :suggestionList='cityList'
+                           :searchString='cityInputString'
+                           :activeIndexPoint='suggestionBoxActiveIndex'
+                           :isEnterPressed='isUserPressedEnter'
+                           @newIndexChanged='setNewIndex'
+                           @itemClicked='setCity'
+                            />
+            <suggestionBox v-else
+                           :isSearchable='true' 
+                           :suggestionList='localityList'
+                           :searchString='localityInputString'
+                           :activeIndexPoint='suggestionBoxActiveIndex'
+                           :isEnterPressed='isUserPressedEnter'
+                           @newIndexChanged='setNewIndex'
+                           @itemClicked='setLocality'
+                            />
+        </div>
+        
         <!-- no of person input -->
-        <div class='flex items-center f3 w-40' v-if='currentView === view[3]'>
+        <div class='flex items-center f3 w-40 mb3' v-if='currentView === view[3]'>
           <div><i class="fa fa-minus-circle" :class='{"light-gray": currentBooking.pax === 0 }' aria-hidden="true" @click='currentBooking.pax > 0 && currentBooking.pax--'></i></div>
           <div class='flex-auto tc'>
             <input type="text" v-model='currentBooking.pax'  placeholder="No of Persons" class="form-control form-control-xl bn f3 tc">
@@ -77,7 +124,7 @@
           <div><i class="fa fa-plus-circle" aria-hidden="true" @click='currentBooking.pax++'></i></div>
         </div>
         <!-- progress bar -->
-        <div class="progress progress-sm mb-3" >
+        <div class="progress progress-sm mb3" >
             <div class="progress-bar" role="progressbar"  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
                 :class='{"w-10": currentView === view[0], "w-30": currentView === view[1],"w-50": currentView === view[2],"w-75": currentView === view[3]}'>
                 
@@ -127,7 +174,7 @@
     </section>
     
     <!-- Third section  -->
-    <section class='flex flex-column align-stretch flex-auto items-center'>
+    <section class='flex flex-column align-stretch flex-auto items-center  w-100'>
       <!-- hotel listing area -->
       <div class='bg-light-gray pt2 pb2 flex justify-center items-stretch w-100' v-if='view[4] === currentView'>
         <div class='flex w-60'>
@@ -303,45 +350,29 @@
       <!-- city listing area -->
       <div class='flex flex-column w-60' v-if='currentView === view[0]'>
         <div class='pt2 pb2 b'>often Destination</div>
-        <ul class='flex flex-column pa0 h-100 overflow-y pointer'>
-          <li v-for='i in oftenList'
-              :key='i.cityId'
-              class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'
-              @click='currentBooking.city = i.cityName,currentBooking.cityId = i.cityId,step++'>
-            <div>{{i.cityName}}</div>
-            <div class='flex flex-column tr'>
-              <span>{{i.hotelFound}}</span>
-              <span>Hotels</span>
-            </div>
-          </li>
-        </ul>
+        <suggestionBox :isSearchable="false"
+                       :suggestionList='oftenList'
+                       @itemClicked='setCity' 
+                       />
       </div>
 
       <!-- locality listing area -->
       <div class='flex flex-column w-60' v-if='currentView === view[1]'>
         <div class='pt2 pb2 b'>locality of {{currentBooking["city"]}}</div>
-        <ul class='flex flex-column pa0 h-100 overflow-y pointer'>
-          <li v-for='i in localityList'
-              :key='i.localityId'
-              class='flex justify-between items-center pt2 pb2 b fw4 gray bb b--light-gray'
-              @click='currentBooking.locality = i.localityName,currentBooking.localityId = i.localityId,step++'>
-            <div>{{i.localityName}}</div>
-            <div class='flex flex-column tr'>
-              <span>{{i.hotelFound}}</span>
-              <span>Hotels</span>
-            </div>
-          </li>
-        </ul>
+        <suggestionBox :isSearchable="false"
+                       :suggestionList='localityList'
+                       @itemClicked='setLocality'  
+                       />
       </div>
       <!-- calender -->
-      <div class=' flex align-stretch w-60' v-if='currentView === view[2]'>
+      <div class=' flex align-stretch w-60 justify-center' v-if='currentView === view[2]'>
         <div clas='flex mt3 justify-center flex-auto'>
         
           <VRangeSelector :start-date.sync='currentBooking.fromDateObj' :disabled-dates='{to: (new Date())}' :end-date.sync='currentBooking.toDateObj' />
         </div>
       </div>
       <!-- employee listing area -->
-      <div v-if='currentView === view[3]'>
+      <div class='flex flex-column w-60' v-if='currentView === view[3]'>
         <div class='pt2 pb2 b fw5'>Guest with you</div>
         <div class='flex items-stretch '>
           <div class='flex flex-column w-25 bg-light-gray'>
@@ -521,18 +552,22 @@
 <script>
 // import DatePicker from 'vuejs-datepicker';
 import VRangeSelector from 'vuelendar/components/vl-range-selector';
-import { format, startOfTomorrow, addDays, isAfter } from 'date-fns';
+import { format, startOfTomorrow, addDays } from 'date-fns';
 import { isEmptyString, formatDate } from '../utility/utility'
 import api from '../utility/api'
 import "vuelendar/scss/vuelendar.scss"
+import suggestionBox from '../components/suggestionBox.component'
 
 export default {
   name: 'search',
-  components : {  VRangeSelector },
+  components : {  VRangeSelector, suggestionBox },
   data: function(){
     return {
       view: ["City","locality","Date","Person","Hotel","Complete","Hotel-Profile"],
       step: 0,
+      cityInputString: "",
+      localityInputString: "",
+      isUserPressedEnter: false,
       currentBooking: {
         hotel: "",
         hotelId: "",
@@ -547,6 +582,8 @@ export default {
         pax: "",
         guest: []
       },
+      suggestionBoxActiveIndex: -1,
+      showSuggestion: false,
     }
   },
   watch: {
@@ -556,6 +593,11 @@ export default {
 
     'currentBooking.toDateObj': function(val){
       this.currentBooking.to = formatDate(new Date(val));
+    },
+
+    'showSuggestion': function(){
+      //make the suggestion index = -1
+      this.suggestionBoxActiveIndex = -1;
     }
   },
   
@@ -573,7 +615,29 @@ export default {
         }
         this.currentBooking[i] = ""
       }
+    },
+
+    setCity: function({ cityName, cityId }) {
+      this.isUserPressedEnter = false;//reset the enter button pressed state
+      this.showSuggestion = false;
+      this.currentBooking.city = cityName;
+      this.currentBooking.cityId = cityId;
+      this.step = 1;
+    },
+
+    setLocality: function({ localityName, localityId}) {
+      this.isUserPressedEnter = false;//reset the enter button pressed state
+      this.showSuggestion = false;
+      this.currentBooking.locality = localityName;
+      this.currentBooking.localityId = localityId;
+      this.step = 2;
+    },
+
+    setNewIndex: function(newIndex){
+      this.suggestionBoxActiveIndex = newIndex;
     }
+
+
   },
   computed: {
     currentView(){
@@ -621,7 +685,7 @@ export default {
 
   },
   created(){
-    
+     this.$store.dispatch('initiateState')
   }
 
 }
@@ -683,6 +747,15 @@ ul{
 }
 .show{
   visibility: visible;
+}
+
+.bg-aliceblue{
+  background-color: aliceblue;
+}
+
+/* sugesstion box wrapper position */
+.top-4{
+  top:4.75rem;
 }
 </style>
 
