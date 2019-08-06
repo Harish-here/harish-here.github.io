@@ -228,15 +228,17 @@
           </div>
           <!-- hotel portion -->
           <div class='w-80 pl2 pr2'>
-            <div class="tab-content ">
+            <div class="tab-content" 
+                 v-for="i in hotelsList"
+                 :key='i.hotelId'>
                   <div class="tab-pane fade active show" id="menu1">
                       <div class="nav-folder-top">
                           <div class="d-flex align-items-center">
                               <img src="../assets/validation.svg" width="30px" class="img-fluid mr-2">
                               <h5 class="m-0 px-2">
-                                  Hotel <strong class="text-uppercase">Hilton</strong>
+                                   <strong class="text-uppercase">{{ i.hotelName }}</strong>
                               </h5>
-                              <p class="m-0 px-2"><small>3 star Hotel</small></p>
+                              <p class="m-0 px-2"><small>{{ i.startRating }} star Hotel</small></p>
                           </div>
                       </div>
                       <!-- hotel tabe content -->
@@ -319,6 +321,7 @@
                               </div>
                               <div class="col flex flex-column">
                                   <h6 clas=''>Reviews</h6>
+                                  <!-- review star -->
                                   <div class="rating pb2">
                                       <input type="radio" name="check" id="st1" value="1">
                                       <label for="st1"></label>
@@ -333,7 +336,7 @@
                                   </div>
                                   <div class="red f7 pb2">3 rooms remaining</div>
                                   <div class='pb2'>
-                                    <button class="btn btn-primary btn-sm" @click='currentBooking.hotel = "Hilton",step++'>Get Approve</button>
+                                    <button class="btn btn-primary btn-sm" @click='currentBooking.hotel = i.hotelName,step++'>Get Approve</button>
                                   </div>
                                   <div class=''>
                                     <button class="btn btn-outline-primary btn-sm" @click='step = 6'>View Details</button>
@@ -344,6 +347,7 @@
                   </div>
             </div>
           </div>
+          <!-- end of hotel -->
         </div>
       </div>
       
@@ -377,45 +381,47 @@
         <div class='flex items-stretch '>
           <div class='flex flex-column w-25 bg-light-gray'>
             <div class='mt3 '>
-              <button class="btn btn-outline-primary btn-sm ml4" @click='currentBooking["pax"] = 1'>For me</button>
+              <button class="btn btn-outline-primary btn-sm ml4" @click='currentBooking["pax"] = 1,currentBooking["guest"] = []'>For me</button>
             </div>
             <!-- department listing panel -->
             <ul class='gray flex flex-column mt3'>
-              <li class='white bg-purple tl pa1 pl4'>Marketing</li>
-              <li class='tl pa1 pl4'>Sales Team</li>
-              <li class='tl pa1 pl4'>Manager</li>
+              <li class=' tl pa1 pl4 pointer'
+                   v-for='(i,index) in departmentList'
+                   :key='index'
+                   :class='{"white bg-purple": activeDepartment == i.departmentId}'
+                   @click='activeDepartment = i.departmentId' >
+                   {{i.departmentName}}
+              </li>
+              <!-- <li class='tl pa1 pl4'>Sales Team</li>
+              <li class='tl pa1 pl4'>Manager</li> -->
             </ul>
           </div>
           <div class='flex flex-column flex-auto'>
             <div class=' green f6 flex justify-end'>
-                <span class='tc w-20'>select all</span> 
+                <span class='tc w-20 pointer'
+                      :class='{"b": Number(currentBooking.pax) === employeeList.length}'
+                      @click='toggleAllEmployee()'>
+                      select all
+                  </span> 
             </div>
             <!-- employee card -->
             <ul class='flex flex-column'>
-              <li class='flex'>
+              <li class='flex'
+                  v-for='i in employeeList'
+                  :key='i.employeeId'>
                 <div class='pa2'>
-                  <img class='ba b--light-silver' width='100' height='100' src="https://robohash.org/search?set=2&size=100x100" alt="">
+                  <img class='ba b--light-silver' width='100' height='100' :src="i.employeeAvatar+i.employeeId+'?set=1&size=100x100'" alt="">
                 </div>
                 <div class='flex-auto flex flex-column pa2'>
-                  <div class='pa1'>Suresh</div>
-                  <div class='pa1 f6'>Senior marketing</div>
-                  <div class='pa1 green'>Team 1</div>
+                  <div class='pa1'>{{ i.employeeName }}</div>
+                  <div class='pa1 f6'> {{ i.designation.label }}</div>
+                  <div class='pa1 green'>{{ i.department.label }}</div>
                 </div>
                 <div class='flex flex-column justify-center f3 w-10'>
-                  <i class="fa fa-check-circle light-gray" aria-hidden="true"></i>
-                </div>
-              </li>
-              <li class='flex'>
-                <div class='pa2'>
-                  <img class='ba b--light-silver'  width='100' height='100' src="https://robohash.org/searchs?set=2&size=100x100" alt="">
-                </div>
-                <div class='flex-auto flex flex-column pa2'>
-                  <div class='pa1'>Ram</div>
-                  <div class='pa1 f6'>Senior Associate</div>
-                  <div class='pa1 green'>Team 11</div>
-                </div>
-                <div class='flex flex-column justify-center f3  w-10'>
-                  <i class="fa fa-check-circle light-gray" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle light-silver pointer"
+                     aria-hidden="true"
+                     @click='toggleEmployee(i.employeeId)'
+                     :class='{"green": currentBooking.guest.includes(i.employeeId)}'></i>
                 </div>
               </li>
             </ul>
@@ -553,10 +559,11 @@
 // import DatePicker from 'vuejs-datepicker';
 import VRangeSelector from 'vuelendar/components/vl-range-selector';
 import { format, startOfTomorrow, addDays } from 'date-fns';
-import { isEmptyString, formatDate } from '../utility/utility'
+import { isEmptyString, formatDate, spliceArray } from '../utility/utility'
 import api from '../utility/api'
 import "vuelendar/scss/vuelendar.scss"
 import suggestionBox from '../components/suggestionBox.component'
+import { deepEqual } from 'assert';
 
 export default {
   name: 'search',
@@ -576,29 +583,48 @@ export default {
         locality:"",
         localityId:"",
         from:"",
-        fromDateObj: startOfTomorrow(),
-        toDateObj: addDays(startOfTomorrow(),1),
+        fromDateObj: format(startOfTomorrow(),"YYYY-MM-DD"),
+        toDateObj: format(addDays(startOfTomorrow(),1),"YYYY-MM-DD"),
         to:"",
         pax: "",
         guest: []
       },
       suggestionBoxActiveIndex: -1,
       showSuggestion: false,
+      activeDepartment: "1"
     }
   },
   watch: {
     'currentBooking.fromDateObj': function(val){
       this.currentBooking.from = formatDate(new Date(val));
+      this.currentBooking.toDateObj = "";
     },
 
     'currentBooking.toDateObj': function(val){
+      if(isEmptyString(val)){
+        this.currentBooking.to = "";
+        return
+      }
       this.currentBooking.to = formatDate(new Date(val));
     },
 
     'showSuggestion': function(){
       //make the suggestion index = -1
       this.suggestionBoxActiveIndex = -1;
+    },
+
+    'currentView': function(newValue, oldvalue) {
+      //check here the major rules sets switching from on view to another
+     
+      if(oldvalue === this.view[2] && newValue === this.view[3]) {
+
+        if(this.currentBooking.to === "" || this.currentBooking.from === "" ){
+          this.step--;
+          alert('You need to select the date')
+        }
+      }
     }
+
   },
   
   methods: {
@@ -635,6 +661,31 @@ export default {
 
     setNewIndex: function(newIndex){
       this.suggestionBoxActiveIndex = newIndex;
+    },
+
+    toggleEmployee: function(id){
+      if(this.currentBooking.guest.includes(id)){
+
+        this.currentBooking.guest = spliceArray(this.currentBooking.guest,id);
+        this.currentBooking.pax--;
+        
+      }else{
+
+        this.currentBooking.guest.push(id);
+        this.currentBooking.pax++;
+      }
+    },
+
+    toggleAllEmployee: function(){
+      if(Number(this.currentBooking.pax) === this.employeeList.length) {
+        this.currentBooking.guest = []
+        this.currentBooking.pax = "";
+      }else{
+        this.currentBooking.guest = this.employeeList.map(x => x.employeeId);
+        this.currentBooking.pax = this.currentBooking.guest.length;
+      }
+      
+
     }
 
 
@@ -672,7 +723,7 @@ export default {
     },
 
     employeeList(){
-      return this.$store.state.employeesList
+      return this.$store.state.employeeList
     },
 
     localityList(){
@@ -681,6 +732,10 @@ export default {
 
     oftenList(){
       return this.$store.state.citiesList.slice(24)
+    },
+
+    departmentList(){
+      return this.$store.state.departmentList
     }
 
   },

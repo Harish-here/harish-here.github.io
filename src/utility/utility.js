@@ -41,7 +41,12 @@ export function formatDate(obj = new Date()){
 
     return obj.getDate() + " " + month[obj.getMonth()] + " " + obj.getFullYear()
 }
+//array utility
+export function spliceArray(arr,element){
 
+     arr.splice(arr.indexOf(element),1)
+     return arr
+}
 //error throw
 export function throwError(str){
     if(isEmptyString(str)) return false
