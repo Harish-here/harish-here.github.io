@@ -7,7 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "predeploy": "vue-cli-service build && git add --all && git commit -a -m \"firebase deployed version\" && git push origin",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy && node email.js"
   },
   "dependencies": {
     "core-js": "^2.6.5",
