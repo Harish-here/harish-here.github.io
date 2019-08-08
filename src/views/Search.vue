@@ -231,7 +231,7 @@
           <div class='flex flex-column flex-auto'>
             <div class=' green f6 flex justify-end'>
                 <span class='tc w-20 pointer'
-                      :class='{"b": Number(currentBooking.pax) === employeeList.length}'
+                      :class='{"b": Number(currentBooking.pax) === employeeList.length && currentBooking.guest.length > 0 }'
                       @click='toggleAllEmployee()'>
                       select all
                   </span> 
