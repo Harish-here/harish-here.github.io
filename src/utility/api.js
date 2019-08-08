@@ -7,7 +7,7 @@ const route = {
 }
 
  const api = {
-    getHotel: "https://api.myjson.com/bins/fi3jd",
+    getHotel: "https://api.myjson.com/bins/12zc0d",
     getEmployee: "https://api.myjson.com/bins/1cxr91",
     getCity: "https://api.myjson.com/bins/16w1d5",
     getHotelDetails: "",

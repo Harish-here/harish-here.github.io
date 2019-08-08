@@ -177,177 +177,9 @@
     <section class='flex flex-column align-stretch flex-auto items-center  w-100'>
       <!-- hotel listing area -->
       <div class='bg-light-gray pt2 pb2 flex justify-center items-stretch w-100' v-if='view[4] === currentView'>
-        <div class='flex w-60'>
-          <!-- filter potion -->
-          <div class='w-20 bg-white ml2 pa3'>
-            <div class='pt2 pb2 b'>Filters</div>
-            <!-- ratings -->
-            <div class='pb2'>
-              <div class='pt1 pb1 b'>Rating</div>
-              <ul class='pt1 pb1'>
-                <li class='flex items-center pb2'>
-                  <input type="checkbox" name="" id="">
-                  <span class='pl2'> 4.5 Above</span>
-                </li>
-                <li class='flex items-center pb2'>
-                  <input type="checkbox" name="" id="">
-                  <span class='pl2'> 4 Above</span>
-                </li>
-                <li class='flex items-center pb2'>
-                  <input type="checkbox" name="" id="">
-                  <span class='pl2'> 3 Above</span>
-                </li>
-                <li class='flex items-center pb2'>
-                  <input type="checkbox" name="" id="">
-                  <span class='pl2'> 2 Above</span>
-                </li>
-              </ul>
-            </div>
-            <!-- amenities -->
-            <div class='pb2'>
-              <div class='pt1 pb1 b'>Amenities</div>
-              <ul class='pt1 pb1 h-200 overflow-y-auto'>
-                <li class='flex items-center pb2'>
-                  <input type="checkbox" name="" id="">
-                  <span class='pl2'> wifi</span>
-                </li>
-                <li class='flex items-center pb2'>
-                  <input type="checkbox" name="" id="">
-                  <span class='pl2'> Board room</span>
-                </li>
-                <li class='flex items-start pb2'>
-                  <input type="checkbox" name="" id="">
-                  <span class='pl2'> Hallow square</span>
-                </li>
-                <li class='flex items-center pb2'>
-                  <input type="checkbox" name="" id="">
-                  <span class='pl2'> Free pickup</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- hotel portion -->
-          <div class='w-80 pl2 pr2'>
-            <div class="tab-content" 
-                 v-for="i in hotelsList"
-                 :key='i.hotelId'>
-                  <div class="tab-pane fade active show" id="menu1">
-                      <div class="nav-folder-top">
-                          <div class="d-flex align-items-center">
-                              <img src="../assets/validation.svg" width="30px" class="img-fluid mr-2">
-                              <h5 class="m-0 px-2">
-                                   <strong class="text-uppercase">{{ i.hotelName }}</strong>
-                              </h5>
-                              <p class="m-0 px-2"><small>{{ i.startRating }} star Hotel</small></p>
-                          </div>
-                      </div>
-                      <!-- hotel tabe content -->
-                      <div class="nav-folder-container bg-white mb3">
-                          <div class="row">
-                              <div class="col">
-                                  <img src="../assets/picture.svg" width="150px" class="img-fluid">
-                              </div>
-                              <div class="col flex flex-column">
-                                  <h6 class=''>Ammenities(+16)</h6>
-                                  <div class='flex flex-auto justify-center tc'>
-                                    <ul class='flex flex-wrap justify-around items-start'>
-                                      <li class='flex pa1 gray flex-column w-50'>
-                                        <div class='f4'>
-                                          <i class="fa fa-cutlery" aria-hidden="true"></i>
-                                        </div>
-                                        <div class='f6'>
-                                          Food
-                                        </div>
-                                      </li>
-                                      <li class='flex pa1 gray flex-column w-50'>
-                                        <div class='f4'>
-                                          <i class="fa fa-tint" aria-hidden="true"></i>
-                                        </div>
-                                        <div  class='f6'>
-                                        RO
-                                        </div>
-                                      </li>
-                                      <li class='flex pa1 gray flex-column w-50'>
-                                        <div class='f4'>
-                                          <i class="fa fa-car" aria-hidden="true"></i>
-                                        </div>
-                                        <div  class='f6'>
-                                          Pickup
-                                        </div>
-                                      </li>
-                                      <li class='flex pa1 gray flex-column w-50'>
-                                        <div class='f4'>
-                                          <i class="fa fa-wifi" aria-hidden="true"></i>
-                                        </div>
-                                        <div class='f6'>
-                                          wifi
-                                        </div>
-                                      </li>
-                
-                                    </ul>
-                                  </div>
-                              </div>
-                              <div class="col flex flex-column">
-                                  <h6 class=''>Accesibility</h6>
-                                  <div class='flex flex-auto  tc'>
-                                    <ul class='flex flex-wrap items-start'>
-                                      <li class='flex pa1 gray flex-column w-50'>
-                                        <div class='f4'>
-                                          <i class="fa fa-train" aria-hidden="true"></i>
-                                        </div>
-                                        <div class='f7'>
-                                          2km 
-                                        </div>
-                                      </li>
-                                      <li class='flex pa1 gray flex-column w-50'>
-                                        <div class='f4'>
-                                          <i class="fa fa-bus" aria-hidden="true"></i>
-                                        </div>
-                                        <div  class='f7'>
-                                        2.3km
-                                        </div>
-                                      </li>
-                                      <li class='flex pa1 gray flex-column w-50'>
-                                        <div class='f4'>
-                                          <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                        </div>
-                                        <div class='f7'>
-                                          5.2km 
-                                        </div>
-                                      </li>
-                
-                                    </ul>
-                                  </div>
-                              </div>
-                              <div class="col flex flex-column">
-                                  <h6 clas=''>Reviews</h6>
-                                  <!-- review star -->
-                                  <div class="rating pb2">
-                                      <input type="radio" name="check" id="st1" value="1">
-                                      <label for="st1"></label>
-                                      <input type="radio" name="check" id="st2" value="2">
-                                      <label for="st2"></label>
-                                      <input type="radio" name="check" id="st3" value="3">
-                                      <label for="st3"></label>
-                                      <input type="radio" name="check" id="st4" value="4">
-                                      <label for="st4"></label>
-                                      <input type="radio" name="check" id="st5" value="5">
-                                      <label for="st5"></label>
-                                  </div>
-                                  <div class="red f7 pb2">3 rooms remaining</div>
-                                  <div class='pb2'>
-                                    <button class="btn btn-primary btn-sm" @click='currentBooking.hotel = i.hotelName,step++'>Get Approve</button>
-                                  </div>
-                                  <div class=''>
-                                    <button class="btn btn-outline-primary btn-sm" @click='step = 6'>View Details</button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-            </div>
-          </div>
-          <!-- end of hotel -->
+        <div class='flex  w-60'>
+          <!-- hotel Listing component -->
+          <hotel-listing @hotelSelected='setHotel' />
         </div>
       </div>
       
@@ -563,11 +395,11 @@ import { isEmptyString, formatDate, spliceArray } from '../utility/utility'
 import api from '../utility/api'
 import "vuelendar/scss/vuelendar.scss"
 import suggestionBox from '../components/suggestionBox.component'
-import { deepEqual } from 'assert';
+import HotelListing from '../components/HotelsListing.component'
 
 export default {
   name: 'search',
-  components : {  VRangeSelector, suggestionBox },
+  components : {  VRangeSelector, suggestionBox, HotelListing },
   data: function(){
     return {
       view: ["City","locality","Date","Person","Hotel","Complete","Hotel-Profile"],
@@ -632,8 +464,15 @@ export default {
     flush: function(){
       for(let i in this.currentBooking){
         if(i === "fromDateObj" || i === "toDateObj" ){
-          this.currentBooking[i] = {};
-          continue;
+          if( i === "fromDateObj"){
+            this.currentBooking[i] = format(startOfTomorrow(),"YYYY-MM-DD");
+            continue;
+          } else {
+            this.currentBooking[i] = format(addDays(startOfTomorrow(),1),"YYYY-MM-DD");
+            continue;
+          }
+          // this.currentBooking[i] = {};
+          
         }
         if(i === 'pax'){
           this.currentBooking['pax'] = 0;
@@ -657,6 +496,13 @@ export default {
       this.currentBooking.locality = localityName;
       this.currentBooking.localityId = localityId;
       this.step = 2;
+    },
+
+    setHotel: function(hotelObj){
+      console.log(hotelObj)
+      this.currentBooking.hotelId = hotelObj.hotelId;
+      this.currentBooking.hotel = hotelObj.hotelName;
+      this.step++;
     },
 
     setNewIndex: function(newIndex){
