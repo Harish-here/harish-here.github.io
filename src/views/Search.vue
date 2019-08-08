@@ -499,7 +499,7 @@ export default {
     },
 
     setHotel: function(hotelObj){
-      console.log(hotelObj)
+     
       this.currentBooking.hotelId = hotelObj.hotelId;
       this.currentBooking.hotel = hotelObj.hotelName;
       this.step++;
