@@ -18,36 +18,36 @@
                         <img src="../assets/picture.svg" width="150px" class="img-fluid">
                     </div>
                     <div class="col flex flex-column">
-                        <h6 class=''>Ammenities(+16)</h6>
-                        <div class='flex flex-auto justify-center tc'>
-                        <ul class='flex flex-wrap justify-around items-start'>
-                            <li class='flex pa1 gray flex-column w-50'
-                                v-for='i in hotelObj.amenities'
-                                :key='i.value'
-                                >
-                                <div class='f4'>
-                                    <i :class="i.icon" aria-hidden="true"></i>
-                                </div>
-                                <div class='f7'>
-                                    {{ i.label }}
-                                </div>
-                            </li>
-                        </ul>
+                        <h6 class='tc'>Ammenities(+16)</h6>
+                        <div class='flex  justify-center tc'>
+                            <ul class='flex-auto flex flex-wrap justify-around items-start'>
+                                <li class='flex pa1 gray flex-column w-50'
+                                    v-for='i in hotelObj.amenities'
+                                    :key='i.value'
+                                    >
+                                    <div class='f4 tc'>
+                                        <i :class="i.icon" aria-hidden="true"></i>
+                                    </div>
+                                    <div class='tc f7'>
+                                        {{stringClean(i.label)}}
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="col flex flex-column">
-                        <h6 class=''>Accesibility</h6>
+                        <h6 class='tc'>Accesibility</h6>
                         <div class='flex flex-auto  tc'>
-                        <ul class='flex flex-wrap items-start'>
+                        <ul class='flex flex-auto flex-wrap items-start'>
                             <li class='flex pa1 gray flex-column w-50' 
                                 v-for='i in hotelObj.accessibility'
                                 :key='i.value'
                                 >
-                                <div class='f4'>
+                                <div class='f4 tc'>
                                     <i :class="i.icon" aria-hidden="true"></i>
                                 </div>
-                                <div class='f7'>
-                                    {{ stringClean(i.label) }} 
+                                <div class='f7 tc'>
+                                    {{stringClean(i.label)}} 
                                 </div>
                             </li>
                         </ul>
