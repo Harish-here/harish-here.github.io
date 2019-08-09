@@ -94,7 +94,7 @@
         
         <!-- suggestion box for both locality & city -->
         <div v-show='showSuggestion'
-             class='absolute bg-white left-0 right-0 top-4 overflow-y-auto' style='height:450px;z-index:2000;'>
+             class='absolute bg-white left-0 right-0 top-4 overflow-y-auto'>
             <suggestionBox v-if='currentView === view[0]'
                            :isSearchable='true' 
                            :suggestionList='cityList'
@@ -126,7 +126,7 @@
         <!-- progress bar -->
         <div class="progress progress-sm mb3" >
             <div class="progress-bar" role="progressbar"  aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"
-                :class='{"w-10": currentView === view[0], "w-30": currentView === view[1],"w-50": currentView === view[2],"w-75": currentView === view[3]}'>
+                :class='{"w-20": currentView === view[0], "w-40": currentView === view[1],"w-60": currentView === view[2],"w-80": currentView === view[3]}'>
                 
             </div>
         </div>
@@ -184,7 +184,7 @@
       </div>
       
       <!-- city listing area -->
-      <div class='flex flex-column w-60' v-if='currentView === view[0]'>
+      <div class='flex flex-column w-60' v-if='currentView === view[0]' v-show='!showSuggestion'>
         <div class='pt2 pb2 b'>often Destination</div>
         <suggestionBox :isSearchable="false"
                        :suggestionList='oftenList'
@@ -193,7 +193,7 @@
       </div>
 
       <!-- locality listing area -->
-      <div class='flex flex-column w-60' v-if='currentView === view[1]'>
+      <div class='flex flex-column w-60' v-if='currentView === view[1]' v-show='!showSuggestion'>
         <div class='pt2 pb2 b'>locality of {{currentBooking["city"]}}</div>
         <suggestionBox :isSearchable="false"
                        :suggestionList='localityList'
@@ -233,7 +233,8 @@
                 <span class='tc w-20 pointer'
                       :class='{"b": Number(currentBooking.pax) === employeeList.length && currentBooking.guest.length > 0 }'
                       @click='toggleAllEmployee()'>
-                      select all
+                      <span v-if='Number(currentBooking.pax) === employeeList.length && currentBooking.guest.length > 0'>unselect all</span>
+                      <span v-else>select all</span>
                   </span> 
             </div>
             <!-- employee card -->
