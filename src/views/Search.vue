@@ -42,7 +42,7 @@
               </li>
               <li class="flex flex-column flex-auto">
                 <div class='gray '>Near By</div>
-                <div class='b f6'>Airport</div>
+                <div class='b f6'>{{currentBooking.locality}}</div>
               </li>
               <li class="flex flex-column flex-auto">
                 <div class='gray '>Guest</div>
@@ -204,7 +204,9 @@
       <div class=' flex align-stretch w-60 justify-center' v-if='currentView === view[2]'>
         <div clas='flex mt3 justify-center flex-auto'>
         
-          <VRangeSelector :start-date.sync='currentBooking.fromDateObj' :disabled-dates='{to: (new Date())}' :end-date.sync='currentBooking.toDateObj' />
+          <VRangeSelector :start-date.sync='currentBooking.fromDateObj'
+                          :disabled-dates='{to: (new Date())}' 
+                          :end-date.sync='currentBooking.toDateObj' />
         </div>
       </div>
       <!-- employee listing area -->
@@ -224,8 +226,6 @@
                    @click='activeDepartment = i.departmentId' >
                    {{i.departmentName}}
               </li>
-              <!-- <li class='tl pa1 pl4'>Sales Team</li>
-              <li class='tl pa1 pl4'>Manager</li> -->
             </ul>
           </div>
           <div class='flex flex-column flex-auto'>
